@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Portfolio of Ahmed Gamal, a front-end developer focused on responsive, user-centric web interfaces." />
+<title>Ahmed Gamal — Front-end Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf8;
+    --surface: #f1f0ec;
+    --line: #e3e1db;
+    --ink: #17181a;
+    --ink-muted: #75786e;
+    --accent: #0e6e5c;
+    --radius: 3px;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    border-right: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 36px;
+  }
+
+  .brand-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .role-line {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+
+  .toc {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .toc-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-muted);
+    transition: color 0.2s ease;
+  }
+
+  .toc-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-muted);
+    transition: background 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .toc-link.active { color: var(--ink); }
+
+  .toc-link.active .toc-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .toc-link:hover { color: var(--ink); }
+
+  .sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  .sidebar-footer a:hover { color: var(--accent); }
+
+  /* Main content */
+  .content { padding: 0 64px; }
+
+  .section {
+    max-width: 640px;
+    padding: 96px 0;
+    border-bottom: 1px solid var(--line);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section.in-view { opacity: 1; transform: translateY(0); }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  /* Hero */
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .hero h1 .hash { color: var(--accent); }
+
+  .hero .lede {
+    margin-top: 24px;
+    font-size: 19px;
+    color: var(--ink-muted);
+    max-width: 520px;
+  }
+
+  .facts {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+
+  .fact { display: flex; gap: 16px; }
+  .fact dt { width: 80px; color: var(--ink-muted); flex-shrink: 0; }
+  .fact dd { margin: 0; }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 8px;
+  }
+
+  /* Work */
+  .project {
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .project:first-of-type { border-top: none; padding-top: 0; }
+
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .project h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  .project-status {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .project-status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink-muted);
+  }
+  .project-status.live .dot { background: var(--accent); color: var(--accent); }
+  .project-status.live { color: var(--ink); }
+
+  .project p { margin-top: 8px; color: var(--ink-muted); font-size: 15px; }
+
+  .tags {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 3px 8px;
+    color: var(--ink);
+  }
+
+  .project-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+  }
+  .project-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Stack */
+  .stack-group { margin-bottom: 28px; }
+  .stack-group:last-child { margin-bottom: 0; }
+  .stack-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  /* About */
+  .bio { color: var(--ink-muted); margin-bottom: 18px; max-width: 540px; }
+  .bio:last-of-type { margin-bottom: 0; }
+
+  /* Contact */
+  .contact-link-main {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    margin: 8px 0 28px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .contact-link-main:hover { color: var(--accent); border-color: var(--accent); }
+
+  .contact-links {
+    display: flex;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .contact-links a:hover { color: var(--accent); }
+
+  footer {
+    padding: 32px 0 64px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  /* Mobile */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: auto;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px 24px;
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .role-line, .sidebar-footer { display: none; }
+
+    .toc {
+      margin-top: 0;
+      flex-direction: row;
+      gap: 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .toc::-webkit-scrollbar { display: none; }
+
+    .content { padding: 0 24px; }
+    .section { padding: 56px 0; max-width: 100%; }
+    .hero h1 { font-size: 38px; }
+    .project-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .section, .toc-link, .toc-dot, a { transition: none; }
+    .section { opacity: 1; transform: none; }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div>
+        <a href="#intro" class="brand">
+          <div class="brand-title">Ahmed Gamal</div>
+        </a>
+        <p class="role-line">role: "Front-end Developer"<br>based: "Cairo, Helwan"</p>
+        <nav class="toc">
+          <a href="#intro" class="toc-link" data-section="intro"><span class="toc-dot"></span>intro</a>
+          <a href="#work" class="toc-link" data-section="work"><span class="toc-dot"></span>work</a>
+          <a href="#stack" class="toc-link" data-section="stack"><span class="toc-dot"></span>stack</a>
+          <a href="#about" class="toc-link" data-section="about"><span class="toc-dot"></span>about</a>
+          <a href="#contact" class="toc-link" data-section="contact"><span class="toc-dot"></span>contact</a>
+        </nav>
+      </div>
+      <div class="sidebar-footer">
+        <a href="https://www.linkedin.com/in/ahmed-gamal-424b99413" target="_blank" rel="noopener">linkedin</a>
+        <a href="https://x.com/rdUEa8P05s63567" target="_blank" rel="noopener">x / twitter</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section id="intro" class="section hero">
+        <h1><span class="hash">#</span> Ahmed Gamal</h1>
+        <p class="lede">I'm a front-end developer focused on building responsive, user-centric web interfaces with clean, efficient code. Currently broadening my scope into C++ and machine learning to bridge interface design with data-driven functionality.</p>
+        <dl class="facts">
+          <div class="fact"><dt>location</dt><dd>Cairo, Helwan</dd></div>
+          <div class="fact"><dt>focus</dt><dd>Front-end development &amp; UI</dd></div>
+          <div class="fact"><dt>status</dt><dd><span class="status-dot"></span>Open to opportunities</dd></div>
+        </dl>
+      </section>
+
+      <section id="work" class="section">
+        <p class="section-tag">## work</p>
+        <h2>Featured project</h2>
+
+        <div class="project">
+          <div class="project-head">
+            <h3>X-MEN STORE</h3>
+            <span class="project-status live"><span class="dot"></span>production live</span>
+          </div>
+          <p>A small gaming website that sells games at low value.</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div>
+          <a href="https://x-men-store-web-project.vercel.app/" class="project-link" target="_blank" rel="noopener">View project →</a>
+        </div>
+      </section>
+
+      <section id="stack" class="section">
+        <p class="section-tag">## stack</p>
+        <h2>Tools &amp; technologies</h2>
+
+        <div class="stack-group">
+          <div class="stack-label">Languages</div>
+          <div class="tags">
+            <span class="tag">SQL</span>
+            <span class="tag">C++</span>
+            <span class="tag">Python</span>
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <p class="section-tag">## about</p>
+        <h2>About</h2>
+        <p class="bio">Over the past two years, I have dedicated myself to mastering the art of front-end development, building responsive, user-centric web interfaces. I am passionate about creating clean, efficient code and intuitive user experiences.</p>
+        <p class="bio">My journey began with a focus on web technologies, but my technical curiosity has led me to broaden my scope. I have built a foundational understanding of C++, which has deepened my appreciation for systems-level performance, and I am currently applying that analytical mindset to the field of Machine Learning. I am driven by the challenge of bridging the gap between elegant interface design and intelligent, data-driven back-end functionality.</p>
+      </section>
+
+      <section id="contact" class="section">
+        <p class="section-tag">## contact</p>
+        <h2>Get in touch</h2>
+        <p class="bio">I'm open to front-end opportunities and collaborations. The best way to reach me is on LinkedIn.</p>
+        <a href="https://www.linkedin.com/in/ahmed-gamal-424b99413" target="_blank" rel="noopener" class="contact-link-main">LinkedIn</a>
+        <div class="contact-links">
+          <a href="https://x.com/rdUEa8P05s63567" target="_blank" rel="noopener">X / Twitter</a>
+        </div>
+        <footer>© 2026 Ahmed Gamal.</footer>
+      </section>
+    </main>
+  </div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  const links = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        const id = entry.target.getAttribute('id');
+        links.forEach(link => {
+          link.classList.toggle('active', link.dataset.section === id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+</body>
+</html>
